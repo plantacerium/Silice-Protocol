@@ -1,0 +1,523 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "silice_protocol": {
+        "meta": {
+            "protocol_name": "Silice Development Protocol V3",
+            "version": "3.0.0",
+            "date": "2025-12-01",
+            "purpose": "Token-efficient, JSON-first development workflow for AI-assisted coding",
+            "description": "A strict 9-step protocol that treats JSON as the single source of truth, minimizing token usage while maximizing development quality and consistency.",
+            "improvements_over_v2": [
+                "Formalized step-by-step protocol",
+                "Explicit JSON schema support",
+                "Token optimization strategies",
+                "Clear audit and quality gates",
+                "Automated documentation generation support"
+            ]
+        },
+        "core_principles": {
+            "principle_1": {
+                "name": "JSON is Truth",
+                "description": "JSON configuration files are the single source of truth for all architectural decisions, API contracts, and system knowledge."
+            },
+            "principle_2": {
+                "name": "Incremental Updates Only",
+                "description": "Never regenerate entire JSON files. Always send diffs or specific section updates to minimize token usage."
+            },
+            "principle_3": {
+                "name": "Markdown is Generated",
+                "description": "Markdown documentation is derived from JSON truth. Update JSON first, then generate or update markdown as needed."
+            },
+            "principle_4": {
+                "name": "Tests Define Behavior",
+                "description": "Write failing tests before implementation. Tests are executable specifications of expected behavior."
+            },
+            "principle_5": {
+                "name": "Artifacts are Outputs",
+                "description": "Generated artifacts in _08_generated/ are outputs, never inputs. They should never be sent as context to AI."
+            }
+        },
+        "protocol_steps": {
+            "step_1": {
+                "id": "roadmap",
+                "name": "Roadmap Alignment",
+                "purpose": "Validate that the feature or change aligns with project roadmap and priorities",
+                "input": "Feature request or change proposal",
+                "actions": [
+                    "Check ROADMAP.md or roadmap section in knowledge.json",
+                    "Confirm feature is planned and prioritized",
+                    "Identify dependencies and prerequisites",
+                    "Verify no conflicting planned changes"
+                ],
+                "output": "Feature validation confirmation with dependencies identified",
+                "deliverable_type": "validation_report",
+                "success_criteria": [
+                    "Feature exists in roadmap or is approved addition",
+                    "All dependencies identified",
+                    "No blocking conflicts found"
+                ],
+                "token_optimization": "Reference roadmap items by ID/key only, don't copy entire sections"
+            },
+            "step_2": {
+                "id": "design",
+                "name": "JSON Specification",
+                "purpose": "Define feature in JSON configuration BEFORE writing any code",
+                "input": "Validated feature from step 1",
+                "actions": [
+                    "Update knowledge.json with new API signatures",
+                    "Define data structures and state changes",
+                    "Specify expected behavior and constraints",
+                    "Add entries to appropriate sections (api, file_structure, data_flows)",
+                    "Validate JSON syntax and schema"
+                ],
+                "output": "Updated knowledge.json with complete feature specification",
+                "deliverable_type": "json_update",
+                "deliverable_files": [
+                    "_07_config/knowledge.json"
+                ],
+                "success_criteria": [
+                    "JSON is syntactically valid",
+                    "All API contracts defined",
+                    "Data structures documented",
+                    "Behavior constraints specified"
+                ],
+                "token_optimization": "Send only the DIFF or new section as minimal JSON, not entire file"
+            },
+            "step_3": {
+                "id": "context",
+                "name": "Codebase Analysis",
+                "purpose": "Understand dependencies, impact, and integration points",
+                "input": "JSON specification from step 2",
+                "actions": [
+                    "Query codebase_index.json for related files and classes",
+                    "Identify which methods will be affected",
+                    "Check guardian rules for potential MVC violations",
+                    "Review data_flows for integration points",
+                    "Map complexity implications"
+                ],
+                "output": "Dependency map and impact analysis",
+                "deliverable_type": "analysis_report",
+                "success_criteria": [
+                    "All affected files identified",
+                    "Dependencies mapped",
+                    "Guardian rules checked",
+                    "Complexity impact assessed"
+                ],
+                "token_optimization": "Use codebase_index.json paths to locate code, avoid full file scans"
+            },
+            "step_4": {
+                "id": "spec",
+                "name": "Test Specification",
+                "purpose": "Write failing tests that define success criteria",
+                "input": "Dependency analysis from step 3",
+                "actions": [
+                    "Create or update test file in _05_tests/",
+                    "Write tests based on knowledge.json specifications",
+                    "Ensure tests fail initially (red phase of TDD)",
+                    "Run: python -m pytest <test_file> -v",
+                    "Document expected test results"
+                ],
+                "output": "Failing test suite that defines done",
+                "deliverable_type": "test_code",
+                "deliverable_files": [
+                    "_05_tests/test_*.py"
+                ],
+                "success_criteria": [
+                    "Tests written for all new behavior",
+                    "Tests fail as expected (no false positives)",
+                    "Test output clearly shows what's missing",
+                    "Edge cases covered"
+                ],
+                "token_optimization": "Reference existing test patterns from knowledge.json testing section"
+            },
+            "step_5": {
+                "id": "build",
+                "name": "Implementation",
+                "purpose": "Write minimal code to make tests pass",
+                "input": "Failing tests from step 4",
+                "actions": [
+                    "Implement code in appropriate _XX folder based on architecture",
+                    "Follow MVC architecture rules strictly",
+                    "Write only enough code to pass tests (no more)",
+                    "Run tests frequently during implementation",
+                    "Iterate until all tests pass (green phase of TDD)"
+                ],
+                "output": "Working code with all tests passing",
+                "deliverable_type": "source_code",
+                "deliverable_files": [
+                    "_0X_*/",
+                    "Multiple folders depending on change"
+                ],
+                "success_criteria": [
+                    "All tests passing",
+                    "No MVC violations",
+                    "Code follows existing patterns",
+                    "Minimal complexity added"
+                ],
+                "token_optimization": "Implement incrementally, one failing test at a time"
+            },
+            "step_6": {
+                "id": "json",
+                "name": "JSON Knowledge Update",
+                "purpose": "Update JSON configurations with actual implementation details",
+                "input": "Working implementation from step 5",
+                "actions": [
+                    "Update knowledge.json with implementation details if they differ from design",
+                    "Update codebase_index.json with new classes/methods and dependencies",
+                    "Update ui_config.json if any UI constants were added or changed",
+                    "Add to common_patterns section if new pattern emerged",
+                    "Document in critical_bugs_fixed section if this was a bug fix"
+                ],
+                "output": "Fully synchronized JSON knowledge base",
+                "deliverable_type": "json_update",
+                "deliverable_files": [
+                    "_07_config/knowledge.json",
+                    "_07_config/codebase_index.json",
+                    "_07_config/ui_config.json"
+                ],
+                "success_criteria": [
+                    "All JSONs reflect actual implementation",
+                    "Dependency graph up to date",
+                    "New patterns documented",
+                    "No stale information"
+                ],
+                "token_optimization": "CRITICAL: Send only modified sections as diffs, never regenerate entire files",
+                "anti_pattern_warning": "Regenerating entire JSON files wastes 95%+ tokens"
+            },
+            "step_7": {
+                "id": "markdown",
+                "name": "Documentation Update",
+                "purpose": "Update or generate human-readable documentation",
+                "input": "Updated JSON knowledge base from step 6",
+                "actions": [
+                    "Update relevant .md files in _06_docs/",
+                    "Add narrative and usage examples",
+                    "Update diagrams if needed (mermaid, etc)",
+                    "Keep docs synchronized with JSON truth",
+                    "Generate sections from JSON where applicable"
+                ],
+                "output": "Updated markdown documentation",
+                "deliverable_type": "markdown_docs",
+                "deliverable_files": [
+                    "_06_docs/*.md"
+                ],
+                "success_criteria": [
+                    "Docs reflect current implementation",
+                    "Examples are accurate",
+                    "Narrative adds value beyond JSON",
+                    "Cross-references are correct"
+                ],
+                "token_optimization": "Generate from JSON when possible, update manually only for narrative content"
+            },
+            "step_8": {
+                "id": "audit",
+                "name": "Guardian Audit",
+                "purpose": "Validate architectural purity, quality, and compliance",
+                "input": "Complete implementation with documentation from step 7",
+                "actions": [
+                    "Check for MVC violations (no UI imports in logic layers)",
+                    "Verify complexity thresholds (max 15 per method)",
+                    "Run linters: pylint, mypy",
+                    "Check test coverage against targets",
+                    "Validate JSON schemas",
+                    "Check against guardian_checks in codebase_index.json"
+                ],
+                "output": "Quality report with violations list (if any)",
+                "deliverable_type": "audit_report",
+                "success_criteria": [
+                    "No MVC violations",
+                    "Complexity under thresholds",
+                    "Linters pass",
+                    "Coverage targets met",
+                    "All JSON schemas valid"
+                ],
+                "quality_gates": {
+                    "mvc_purity": {
+                        "rule": "No UI imports in _01_core_logic or _02_engines",
+                        "forbidden_imports": [
+                            "PySide6",
+                            "PyQt5",
+                            "tkinter"
+                        ]
+                    },
+                    "complexity_threshold": {
+                        "rule": "No method should exceed 15 cyclomatic complexity",
+                        "action_if_exceeded": "Refactor into smaller methods"
+                    },
+                    "test_coverage": {
+                        "core_logic": "100%",
+                        "integration": "80%",
+                        "ui": "60%"
+                    },
+                    "json_validity": {
+                        "rule": "All JSON files must be valid and schema-compliant"
+                    }
+                },
+                "token_optimization": "Reference guardian rules from knowledge.json by path, don't restate them"
+            },
+            "step_9": {
+                "id": "commit",
+                "name": "Commit and Ingest",
+                "purpose": "Finalize changes and generate artifacts",
+                "input": "Audited and approved implementation from step 8",
+                "actions": [
+                    "Run full test suite: python -m pytest _05_tests/",
+                    "Generate artifacts to _08_generated/ if applicable",
+                    "Commit with descriptive conventional commit message",
+                    "Update conversation history or changelog if tracking iterations",
+                    "Tag release if appropriate"
+                ],
+                "output": "Committed changes with generated artifacts",
+                "deliverable_type": "version_control",
+                "success_criteria": [
+                    "All tests passing",
+                    "Clean commit with clear message",
+                    "Artifacts generated successfully",
+                    "No uncommitted changes remain"
+                ],
+                "token_optimization": "Summarize changes by referencing JSON updates and test results, not code dumps"
+            }
+        },
+        "token_efficiency": {
+            "overview": {
+                "problem": "Traditional markdown documentation requires 50K+ tokens per development session",
+                "solution": "JSON knowledge base requires only 3.5K tokens",
+                "improvement": "14x token reduction",
+                "best_case": "JSON diffs require 50-500 tokens (100x reduction)"
+            },
+            "strategies": {
+                "strategy_1": {
+                    "name": "JSON Diffs Only",
+                    "description": "Send only changed sections of JSON files, not entire files",
+                    "example": "Instead of sending entire knowledge.json (3500 tokens), send: 'Add to file_structure section: {...new_entry...}' (50 tokens)",
+                    "token_savings": "90%+"
+                },
+                "strategy_2": {
+                    "name": "Reference by Key Path",
+                    "description": "Reference existing JSON content by hierarchical path",
+                    "example": "Use 'knowledge.json → api → BoardState2D → place_stone' instead of copying the entire method documentation",
+                    "token_savings": "80%"
+                },
+                "strategy_3": {
+                    "name": "Incremental Updates",
+                    "description": "Update one section at a time, not entire files",
+                    "example": "Update only 'knowledge.json → file_structure → 04_ai/mcts_agent.py' section",
+                    "token_savings": "70%"
+                },
+                "strategy_4": {
+                    "name": "Schema Validation",
+                    "description": "Validate JSON programmatically instead of manual review",
+                    "benefit": "Catches errors with zero token cost",
+                    "implementation": "Use JSON schema validators in step 8 audit"
+                },
+                "strategy_5": {
+                    "name": "Avoid Markdown Regeneration",
+                    "description": "Never regenerate entire markdown files from scratch",
+                    "approach": "Update specific sections only, or generate from JSON templates",
+                    "token_savings": "95%"
+                }
+            }
+        },
+        "file_hierarchy": {
+            "tier_1_machine_truth": {
+                "priority": "highest",
+                "files": [
+                    "_07_config/knowledge.json",
+                    "_07_config/codebase_index.json",
+                    "_07_config/ui_config.json",
+                    "_07_config/development_guide.json",
+                    "_07_config/silice-protocol-v3.json"
+                ],
+                "update_frequency": "Every change",
+                "token_cost": "~4K tokens total",
+                "ai_approach": "Send diffs only, validate with schema"
+            },
+            "tier_2_code": {
+                "priority": "high",
+                "files": [
+                    "*.py implementation files"
+                ],
+                "update_frequency": "Continuous during build phase (step 5)",
+                "token_cost": "Variable, but targeted",
+                "ai_approach": "Edit specific functions/classes, not full files"
+            },
+            "tier_3_human_docs": {
+                "priority": "medium",
+                "files": [
+                    "_06_docs/*.md"
+                ],
+                "update_frequency": "After implementation stabilizes (step 7)",
+                "token_cost": "~50K tokens if regenerated",
+                "ai_approach": "Update incrementally, generate from JSON when possible"
+            },
+            "tier_4_artifacts": {
+                "priority": "output_only",
+                "files": [
+                    "_08_generated/*"
+                ],
+                "update_frequency": "On demand (step 9)",
+                "token_cost": "N/A (never sent as input)",
+                "ai_approach": "Never send as context, only generate as output"
+            }
+        },
+        "common_workflows": {
+            "workflow_add_feature": {
+                "name": "Adding a New Feature",
+                "steps": [
+                    "Step 1 (Roadmap): Verify feature is planned",
+                    "Step 2 (Design): Update knowledge.json with API spec",
+                    "Step 3 (Context): Query codebase_index.json for dependencies",
+                    "Step 4 (Spec): Write failing tests",
+                    "Step 5 (Build): Implement code to pass tests",
+                    "Step 6 (JSON): Update all affected JSONs with implementation details",
+                    "Step 7 (Markdown): Update documentation",
+                    "Step 8 (Audit): Run quality checks",
+                    "Step 9 (Commit): Commit and generate artifacts"
+                ],
+                "estimated_duration": "1-4 hours depending on complexity"
+            },
+            "workflow_fix_bug": {
+                "name": "Fixing a Bug",
+                "steps": [
+                    "Step 1 (Roadmap): Skip if bug fix",
+                    "Step 4 (Spec): Add regression test that reproduces bug",
+                    "Step 5 (Build): Fix code to make test pass",
+                    "Step 6 (JSON): Add to critical_bugs_fixed in knowledge.json",
+                    "Step 8 (Audit): Run quality checks",
+                    "Step 9 (Commit): Commit fix"
+                ],
+                "estimated_duration": "15 minutes - 2 hours"
+            },
+            "workflow_update_ui": {
+                "name": "Updating UI Configuration",
+                "steps": [
+                    "Step 2 (Design): Update ui_config.json with new settings",
+                    "Step 5 (Build): Update code to read from ui_config.json",
+                    "Step 4 (Spec): Test visually or write UI tests if applicable",
+                    "Step 6 (JSON): Update knowledge.json if architecture changed",
+                    "Step 9 (Commit): Commit changes"
+                ],
+                "estimated_duration": "30 minutes - 1 hour"
+            }
+        },
+        "anti_patterns": {
+            "antipattern_1": {
+                "name": "Regenerating Entire JSON Files",
+                "problem": "Wastes 95%+ tokens and creates large diffs",
+                "bad_example": "Send entire knowledge.json file (3500 tokens)",
+                "good_example": "Send only new section or diff (50 tokens)",
+                "impact": "70x token waste"
+            },
+            "antipattern_2": {
+                "name": "Markdown-First Development",
+                "problem": "Creates double work and inconsistency",
+                "bad_example": "Write documentation first, then update JSON to match",
+                "good_example": "Update JSON first as truth, then generate or update markdown",
+                "impact": "Wasted effort, potential inconsistencies"
+            },
+            "antipattern_3": {
+                "name": "Full File Edits",
+                "problem": "Large diffs, merge conflicts, unclear changes",
+                "bad_example": "Replace entire source file",
+                "good_example": "Target specific functions or classes",
+                "impact": "Poor version control, difficult review"
+            },
+            "antipattern_4": {
+                "name": "Skipping Tests",
+                "problem": "No executable specification, regression risk",
+                "bad_example": "Write code directly without tests",
+                "good_example": "Write failing test first, then implement",
+                "impact": "Fragile code, unclear requirements"
+            },
+            "antipattern_5": {
+                "name": "Context Bloat",
+                "problem": "Loading unnecessary documentation wastes tokens",
+                "bad_example": "Send full markdown files for context (50K tokens)",
+                "good_example": "Query specific JSON keys (500 tokens)",
+                "impact": "100x token waste"
+            }
+        },
+        "schema_validation": {
+            "purpose": "Automate step 8 quality checks with JSON schema validators",
+            "recommended_tools": [
+                "jsonschema (Python library)",
+                "ajv (JavaScript)",
+                "json-schema-validator (CLI)"
+            ],
+            "schema_files": {
+                "knowledge.schema.json": "Validates knowledge.json structure",
+                "codebase_index.schema.json": "Validates codebase_index.json",
+                "ui_config.schema.json": "Validates ui_config.json"
+            },
+            "validation_command": "python -m jsonschema -i _07_config/knowledge.json _07_config/knowledge.schema.json",
+            "integration": "Run in step 8 (audit) before committing"
+        },
+        "documentation_generation": {
+            "purpose": "Generate markdown from JSON in step 7 (markdown)",
+            "approaches": {
+                "approach_1": {
+                    "name": "Template-Based Generation",
+                    "description": "Use Jinja2 or similar to generate markdown from JSON",
+                    "example": "Generate API_REFERENCE.md from knowledge.json → api section"
+                },
+                "approach_2": {
+                    "name": "Script-Based Updates",
+                    "description": "Python script extracts JSON sections and updates markdown",
+                    "example": "Update ARCHITECTURE.md from knowledge.json → file_structure"
+                },
+                "approach_3": {
+                    "name": "Manual Updates with JSON Reference",
+                    "description": "Manually update markdown but always sync with JSON as source of truth",
+                    "use_case": "Narrative content that needs human touch"
+                }
+            },
+            "recommended_files_to_generate": [
+                "API_REFERENCE.md from knowledge.json → api",
+                "ARCHITECTURE.md from knowledge.json → file_structure",
+                "TESTING_GUIDE.md from knowledge.json → testing",
+                "DEPENDENCY_GRAPH.md from codebase_index.json"
+            ]
+        },
+        "usage_guide": {
+            "for_ai_agents": [
+                "Always query knowledge.json first for context (step 3)",
+                "Send JSON diffs only, not full files (step 2, 6)",
+                "Reference existing content by JSON path (all steps)",
+                "Update codebase_index.json when adding/modifying functions (step 6)",
+                "Never regenerate markdown files from scratch (step 7)",
+                "Follow all 9 steps strictly for every change",
+                "Validate JSON syntax before sending (step 2, 6)"
+            ],
+            "for_developers": [
+                "Keep JSONs as single source of truth",
+                "Write tests before code (step 4 before step 5)",
+                "Update JSONs immediately after implementation (step 6)",
+                "Run guardian audit before committing (step 8)",
+                "Use numbered folders for clear dependency hierarchy",
+                "Prefer headless tests for speed and reliability",
+                "Review JSON diffs in PR, not entire files"
+            ]
+        },
+        "version_history": {
+            "v1.0.0": {
+                "date": "2025-11-28",
+                "changes": "Initial protocol with basic workflow"
+            },
+            "v2.0.0": {
+                "date": "2025-11-29",
+                "changes": "Added JSON-first philosophy and token efficiency focus"
+            },
+            "v3.0.0": {
+                "date": "2025-12-01",
+                "changes": [
+                    "Formalized 9-step Silice protocol",
+                    "Added explicit schema validation support",
+                    "Defined token optimization strategies",
+                    "Documented common workflows and anti-patterns",
+                    "Added documentation generation guidance",
+                    "Created standalone protocol JSON for reusability"
+                ]
+            }
+        }
+    }
+}
