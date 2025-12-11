@@ -9,6 +9,15 @@
 A **9-step development workflow** that treats JSON as the single source of truth, minimizing AI token usage while ensuring quality. Think of it as a strict recipe for adding features, fixing bugs, or making changes.
 
 ---
+## ⚡ Support
+<div align="center">
+
+**Made with ❤️ and ☕ by the Plantacerium**
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/plantacerium)
+
+⭐ **Star us on GitHub** if the script is useful to You! ⭐
+</div>
 
 ## 🚀 Quick Start: The 9 Steps
 
@@ -405,3 +414,12 @@ You're using Silice V3 correctly if:
 
 **Next**: Reference `silice-protocol-v3.json → protocol_steps → step_X` for detailed actions and success criteria for each step.
 
+## ⚡ Support
+<div align="center">
+
+**Made with ❤️ and ☕ by the Plantacerium**
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/plantacerium)
+
+⭐ **Star us on GitHub** if the script is useful to You! ⭐
+</div>
